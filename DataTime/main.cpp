@@ -320,7 +320,7 @@ int main() {
         }
         cout << "It is: " << endl;
         cout << date1.weekday(t) << endl;
-        cout << date1.weekNumber(t) << " week of the year" << endl;
+        cout << date1.weekNumber(t) << " week of the year " << endl;
         date1.dayofmonth(t);
         DataTime date2 = { 2022, 10, 1, 19, 45, 50,5 };
         cout << "Difference between the two dates is: " << operator-(date1, date2) << endl;
