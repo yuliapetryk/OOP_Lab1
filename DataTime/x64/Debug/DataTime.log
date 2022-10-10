@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\User\Desktop\ПІ-23\ООП\Лабораторні\Лаба1\2.9DataTime\DataTime\DataTime\main.cpp(184,24): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  DataTime.vcxproj -> C:\Users\User\Desktop\ПІ-23\ООП\Лабораторні\Лаба1\2.9DataTime\DataTime\x64\Debug\DataTime.exe
