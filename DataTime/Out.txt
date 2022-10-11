@@ -1,0 +1,8 @@
+The format is satisfactory
+Difference between the two dates is: 8 days 19 hours 59 minutes 49 seconds
+The sum of the found difference and the specified date: 2022 years 10 months 10 days 9 hours 23 minutes 34 seconds
+It is: 
+Monday
+41 week of the year 
+2nd Monday of October
+1st usually falls on a Tuesday

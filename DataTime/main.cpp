@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <math.h>
+#include <fstream>
 
 
 
@@ -69,15 +71,19 @@ public:
     }
 
     bool Gregorian() {
-        if (hour > 23 || minute > 59 || second > 59 || month > 12)
+        if (hour > 23 || minute > 59 || second > 59 || month > 12 ||timezone>24)
+        {
             return false;
-        if (day > monthDays[month + 1])
-            if (month != 2 || day != 29 || !Leap(year))
-                return false;
+        }
+        if (day > monthDays[month-1])
+        if (month == 2 && day != 29 && Leap(year))
+        {
+            return false;
+        }
 
         return true;
     }
-
+    
 
     string weekday(int t) {
         int a, y, m, h;
@@ -122,10 +128,13 @@ public:
     }
 
 
-    void dayofmonth(int t) {
+    string dayofmonth(int t) {
         int number;
         number = day / 7 + 1;
-        cout << number << " " << weekday(t) << " " << "of " << monthName(month) << endl;
+        string result;
+        result= to_string(number);
+        result +=  Ends(number)+" " + weekday(t) + " " + "of " + monthName(month);
+        return result;
     }
 
     friend bool operator > (const DataTime& date1, const DataTime& date2) {
@@ -201,8 +210,8 @@ public:
             d1.minute -= 60;
             d1.hour++;
         }
-        if (d1.hour + d2.hour >= 60) {
-            d1.hour -= 60;
+        if (d1.hour + d2.hour >= 24) {
+            d1.hour -= 24;
             d1.day++;
         }
         if (d1.month + d2.month > 12) {
@@ -233,20 +242,47 @@ public:
         return *this;
     }
 
-    friend  ostream& operator << (std::ostream& os, const DataTime& date1) {
+    friend  ostream& operator << (ostream& fout, const DataTime& date1) {
         if (date1.year != 0)
-            os << date1.year << " years ";
+            fout << date1.year << " years ";
         if (date1.month != 0)
-            os << date1.month << " months ";
+            fout << date1.month << " months ";
         if (date1.day != 0)
-            os << date1.day << " days ";
+            fout << date1.day << " days ";
         if (date1.hour != 0)
-            os << date1.hour << " hours ";
+            fout << date1.hour << " hours ";
         if (date1.minute != 0)
-            os << date1.minute << " minutes ";
+            fout << date1.minute << " minutes ";
         if (date1.second != 0)
-            os << date1.second << " seconds";
-        return os;
+            fout << date1.second << " seconds";
+        return fout;
+    }
+
+    bool parseInput(const string& input) {
+        if (input[2] != '.' || input[5] != '.' || input[10] != '-' || input[13] != ':' || input[16] != ':'|| input[19]!='-')
+           return false;
+        string dayStr = input.substr(0, 2);
+        int dayInt = stoi(dayStr);
+        setDay(dayInt);
+        string monthStr = input.substr(3, 2);
+        int monthInt = stoi(monthStr);
+        setMonth(monthInt);
+        string yearStr = input.substr(6, 4);
+        int yearInt = stoi(yearStr);
+        setYear(yearInt);
+        string hourStr = input.substr(11, 2);
+        int hourInt = stoi(hourStr);
+        setHour(hourInt);
+        string minuteStr = input.substr(14, 2);
+        int minuteInt = stoi(minuteStr);
+        setMinute(minuteInt);
+        string secondStr = input.substr(17, 2);
+        int secondInt = stoi(secondStr);
+        setSecond(secondInt);
+        string timezoneStr = input.substr(20, 1);
+        int timezoneInt = stoi(timezoneStr);
+        setTimezone(timezoneInt);
+        return true;
     }
 
 
@@ -294,52 +330,84 @@ public:
 
     }
 
+    bool Input(ifstream& fin,DataTime& date) {
+        string input;
+        fin >> input;
+        if (date.parseInput(input)) return true;
+        else return false;
+    }
+   
+    string Ends(int value) {
+        string ends;
+        if (value == 1) ends = "st";
+        else if (value == 2) ends = "nd";
+        else if (value == 3) ends = "rd";
+        else ends = "th";
+        return ends;
+    }
 };
-string Ends(int value) {
-    string ends;
-    if (value == 1) ends = "st";
-    else if (value == 2) ends = "nd";
-    else if (value == 3) ends = "rd";
-    else ends = "th";
-    return ends;
-}
+
 
 
 int main() {
-    DataTime date1 = { 2022, 10, 9, 19, 45, 50,7 };
-
-    if (date1.Gregorian())
+     DataTime date1,date2,date3,date4,date5;
+    ofstream fout;
+    fout.open("Out.txt");
+    ifstream fin;
+    fin.open("In.txt");
+    if ( (!fin.is_open()) || (!fout.is_open()))
     {
-        cout << "The format is satisfactory" << endl;
-        cout << "Do you use the Julian calendar? " << endl;
-        string type;
-        cin >> type;
-        int t = 0;
-        if (type == "Yes" || type == "yes") {
-            t = 1;
-        }
-        cout << "It is: " << endl;
-        cout << date1.weekday(t) << endl;
-        cout << date1.weekNumber(t) << " week of the year " << endl;
-        date1.dayofmonth(t);
-        DataTime date2 = { 2022, 10, 1, 19, 45, 50,5 };
-        cout << "Difference between the two dates is: " << operator-(date1, date2) << endl;
-        cout << "The sum of the found difference and the specified date: " << operator+ (date2, operator-(date1, date2));
-        cout << endl;
-
-        DataTime date3 = { 2022, 1, 1, 0, 0, 0,0 };
-        DataTime date4 = { 2022, 12, 31, 0,0, 0,0 };
-        cout << "Enter a number of a day" << endl;
-        int number;
-        cin >> number;
-        if (number <= 0 || number > 31) cout << " Wrong number!" << endl;
-        else
-        {
-
-            cout << number << Ends(number) << " usually falls on a " << date3.statistics(number, date4, operator-(date4, date3), t) << endl;
-        }
+        cout << "No" << endl;
     }
-    else cout << "The format is not satisfactory" << endl;
+    else
+    {
+        cout << "Yes" << endl;
+       
+        if (date1.Input(fin, date1) ) {
+            if (date1.Gregorian())
+            {
+                fout << "The format is satisfactory" << endl;
+                //зчитуєм другу дату для обчислення різниці
+                if ( (date2.Input(fin, date2))&& (date2.Gregorian()))
+                {
+                    fout << "Difference between the two dates is: " << operator-(date1, date2) << endl;
+                }
+                //зчитуєм третю дату для суми
+                if ((date3.Input(fin, date3))  &&(date3.Gregorian()))
+                {
+                    fout << "The sum of the found difference and the specified date: " << operator+ (date2, operator-(date1, date2))<<endl;
+                }
+                string type;
+                fin >> type;
+                int t=-1;
+                if (type == "Julian" || type == "julian") t = 1;
+                else if (type == "Gregorian" || type=="gregorian") t = 0;
+                if (t != -1) {
+                    fout << "It is: " << endl;
+                    fout << date1.weekday(t) << endl;
+                    fout << date1.weekNumber(t) << " week of the year " << endl;
+                    fout<<date1.dayofmonth(t)<<endl;
+                    //зчитуєм проміжок часу для обчислення статистики
+                    if ( (date4.Input(fin, date4)) && (date5.Input(fin, date5)) ){
+                            int number;
+                            fin >> number;
+                            if (number <= 0 || number > 31) cout << " Wrong number!" << endl;
+                            else
+                            {
 
+                                fout << number << date3.Ends(number) << " usually falls on a " << date4.statistics(number, date5, operator-(date5, date4), t) << endl;
+                            }
+                    }
+                }
+                else fout << "Wrong type!" << endl;
+            }
+            else fout << "The format is not satisfactory" << endl;
+        }
+            else fout << "Incorrect input" << endl;
+        
+    }
+  
+    fin.close();
+    fout.close();
 
 }
