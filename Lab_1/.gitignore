@@ -1,0 +1,10 @@
+x64/
+*.vs
+Debug/
+*.exe
+*.pdb
+*.json
+*.ipch
+*.suo
+*.db
+
