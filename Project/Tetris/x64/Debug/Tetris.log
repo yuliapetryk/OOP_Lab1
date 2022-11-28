@@ -1,0 +1,23 @@
+﻿  Main.cpp
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(51,28): warning C4244: инициализация: преобразование "_Rep" в "unsigned int", возможна потеря данных
+          with
+          [
+              _Rep=__int64
+          ]
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(296,47): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(296,30): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+          with
+          [
+              T=float
+          ]
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(319,23): warning C4244: инициализация: преобразование "float" в "short", возможна потеря данных
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(320,23): warning C4244: инициализация: преобразование "float" в "short", возможна потеря данных
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(334,34): warning C4244: +=: преобразование "double" в "int", возможна потеря данных
+C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\Tetris\Main.cpp(348,32): warning C4244: =: преобразование "float" в "short", возможна потеря данных
+  Tetromino.cpp
+  Создание кода...
+  Tetris.vcxproj -> C:\Users\User\Desktop\PI-23\OOP\Labs\Project\Tetris\x64\Debug\Tetris.exe
